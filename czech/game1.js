@@ -94,15 +94,13 @@ let cstpd = 0;
 // OTAZKY - TEXT
 let questions = [
 {
-  question:
-    "Zavedení všeobecného volebního práva znamená, že mohou volit všichni muži starší 24 let a do parlamentu mohou být zvoleni ve věku 30 let a výš. Končí také omezení volebního práva majetkem a původem. Souhlasíte s tímto nastavením?",
+  question: (question.innerHTML="Zavedení všeobecného volebního práva znamená, že mohou volit všichni muži starší 24 let a do parlamentu mohou být zvoleni ve věku 30 let a výš. Končí také omezení volebního práva majetkem a původem. Souhlasíte s tímto nastavením?"),
   choice1: "Ano",
   choice2: "Ne",
   answer: 1,
 },
 {
-  question:
-    "Část společnosti se domnívá, že by se volební právo mělo vztahovat i na ženy. Zastáváte tento názor?",
+  question: innerHTML="Část společnosti se domnívá, že by se volební právo mělo vztahovat i na ženy. Zastáváte tento názor?",
   choice1: "Ano",
   choice2: "Ne",
   answer: 2,
@@ -116,7 +114,7 @@ let questions = [
 },
 {
   question:
-    "Po dlouhých letech pasivity má česká politika konečně zastoupení v rakouské vládě a možnost spolupracovat s Vídní na vládní úrovni. Měli bychom podle vás i nadále upevňovat politické vztahy a směřovat do Vídně svoje ministry?",
+    "Po dlouhých letech pasivity má česká politika konečně zastoupení v rakouské vládě <br>a možnost spolupracovat s Vídní na vládní úrovni. Měli bychom podle vás i nadále upevňovat politické vztahy a směřovat do Vídně svoje ministry?",
   choice1: "Ano",
   choice2: "Ne",
   answer: 4,
@@ -130,7 +128,7 @@ let questions = [
 },
 {
   question:
-    "Pro českou politiku jsou klíčové hospodářské zájmy. Jde o co největší autonomii v oblasti rozvoje průmyslu a venkova.",
+    "Pro českou politiku jsou klíčové hospodářské zájmy. Jde o co největší autonomii <br>v oblasti rozvoje průmyslu a venkova.",
   choice1: "Ano",
   choice2: "Ne",
   answer: 6,
@@ -158,7 +156,7 @@ let questions = [
 },
 {
   question:
-    "Doba se mění a spolu s tím přicházejí problémy, které rakouská vláda neumí řešit. Je proto třeba změnit politický přístup – méně vyjednávání, větší nátlak!",
+    "Doba se mění a spolu s tím přicházejí problémy, které rakouská vláda neumí řešit. <br>Je proto třeba změnit politický přístup – méně vyjednávání, větší nátlak!",
   choice1: "Ano",
   choice2: "Ne",
   answer: 10,
@@ -233,6 +231,7 @@ startGame = () => {
 questionCounter = 1;
 score = 0;
 availableQuestions = [...questions];
+
 getNewQuestion();
 };
 
@@ -245,10 +244,21 @@ questionCounter++
 // Update the progress bar
 progressBarFull.style.width = `${(questionCounter / MAX_QUESTIONS) * 100}%`;
 
+question.classList.add("slide");
+
+
+function slideAway(){
+  answerContainer.addEventListener("mousedown", function(){
+    question.classList.remove("slide");
+  })
+}
+
+slideAway();
+
 
 
 currentQuestion = availableQuestions[0];
-question.innerText = currentQuestion.question; //ta question na leve strane znaci ten div s tou otazkou. priradim k ni innerText, ktery si js najde tak, ze pujde podle currentQuestion a vezme si property question z te currentQuestion.
+question.innerHTML = currentQuestion.question; //ta question na leve strane znaci ten div s tou otazkou. priradim k ni innerText, ktery si js najde tak, ze pujde podle currentQuestion a vezme si property question z te currentQuestion.
 choices.forEach((choice) => {
   const number = choice.dataset["number"]; //tohle vezme to cislo z toho datasetu v html
   choice.innerHTML = currentQuestion["choice" + number]; //tomu parametru choice to priradi innerText, ktery je v currentQuestion["choice" + number]. Tohle znamena vlastne choice1, choice2 apod.
@@ -422,14 +432,14 @@ function hideButton3(){
     oznaceniButton3.classList.add("hideButton3");;
 }
 
-function slideAway(){
-  answerContainer.addEventListener("mouseup", function(){
-    questionContainer.classList.toggle("slide");
-    console.log('slide');
-  })
-}
+// function slideAway(){
+//   answerContainer.addEventListener("mouseup", function(){
+//     questionContainer.classList.toggle("slide");
+//     console.log('slide');
+//   })
+// }
 
-slideAway();
+// slideAway();
 
 // FUNKCE countPoints - Pocitani bodu
   function countPoints() {
@@ -448,6 +458,7 @@ slideAway();
       mladStar++;
       createButton1 ()
       createButton2 ()
+      // question.classList.add("slide1")
     }
     if (currentQuestion.answer == 1 && selectedAnswer == 2) {
       kler++;

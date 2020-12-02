@@ -236,12 +236,23 @@ getNewQuestion();
 
 //FUNKCE getNewQuestion
 getNewQuestion = () => {
-//  if (availableQuestions.length === 0) {
-// }
+
+
 
 questionCounter++
 // Update the progress bar
 progressBarFull.style.width = `${(questionCounter / MAX_QUESTIONS) * 100}%`;
+
+  // vytvori u divu question dalsi tridu "slide", ktera zajistuje animaci
+  question.classList.add("slide");
+  // odstrani tridu slide, kdyz se klikne na odpoved
+  function slideAway(){
+    answerContainer.addEventListener("mousedown", function(){
+      question.classList.remove("slide");
+    })
+  }
+  // spusteni funkce slideAway
+  slideAway();
 
 
 
@@ -419,15 +430,6 @@ function hideButton3(){
   let oznaceniButton3 = document.querySelector(".button3");
     oznaceniButton3.classList.add("hideButton3");;
 }
-
-function slideAway(){
-  answerContainer.addEventListener("mouseup", function(){
-    questionContainer.classList.toggle("slide");
-    console.log('slide');
-  })
-}
-
-slideAway();
 
 // FUNKCE countPoints - Pocitani bodu
   function countPoints() {
