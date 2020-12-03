@@ -156,7 +156,7 @@ a {
 }
 
 .slide {
-  animation: goLeft 0.8s;
+  animation: goLeft 0.4s;
   animation-timing-function: cubic-bezier(0, 0.4, 0, 1);
   /* transition: animation 3s ease; */
 }
@@ -656,7 +656,7 @@ a {
   cursor: grab;
   font-size: 21pt;
   font-family: "HKGrotesk-SemiBold";
-  animation: appear 0.8s ease-in;
+  animation: appear 0.4s ease-in;
   /* animation-timing-function: cubic-bezier(0, 0.4, 0, 1); */
 }
 
