@@ -158,13 +158,14 @@ a {
 }
 
 .slide {
-  animation: goLeft 0.7s ease-in;
+  animation: goLeft 0.8s;
+  animation-timing-function: cubic-bezier(0, 0.4, 0, 1);
   /* transition: animation 3s ease; */
 }
 
 @keyframes goLeft {
   0% {
-    transform: translateX(1000px);
+    transform: translateX(1500px);
     opacity: 0;
   }
 
@@ -647,7 +648,7 @@ a {
   cursor: grab;
   font-size: 21pt;
   font-family: "HKGrotesk-SemiBold";
-  animation: appear 1.5s ease-in;
+  animation: appear 0.8s ease-in;
 }
 
 @keyframes appear {

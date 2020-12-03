@@ -245,11 +245,16 @@ questionCounter++
 progressBarFull.style.width = `${(questionCounter / MAX_QUESTIONS) * 100}%`;
 
 question.classList.add("slide");
+// question.classList.remove("goAway");
+
+
 
 
 function slideAway(){
   answerContainer.addEventListener("mousedown", function(){
     question.classList.remove("slide");
+    // question.classList.add("goAway");
+
   })
 }
 
