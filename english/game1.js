@@ -95,28 +95,28 @@ let cstpd = 0;
 let questions = [
 {
   question:
-    "The introduction of universal suffrage means that all men over the age of 24 can vote and men over the age of 30 can be elected to the Parliament. The restriction of the right to vote by property and origin is also lifted. Do you agree with this development?",
+    "The introduction of universal suffrage means that all men over the age of 24 can vote and men over the age of 30 can be elected to the Parliament. The restriction <br>of the right to vote by property and origin is also lifted. <br>Do you agree with this development?",
   choice1: "Yes",
   choice2: "No",
   answer: 1,
 },
 {
   question:
-    "Part of the society believes that the right to vote should also apply to women. Do you agree with this opinion?",
+    "Part of the society believes that the right to vote should also apply to women. <br>Do you agree with this opinion?",
   choice1: "Yes",
   choice2: "No",
   answer: 2,
 },
 {
   question:
-    "It is necessary to strive for the greatest possible national independence within the monarchy. The most important agenda must be the defence of national interests.",
+    "It is necessary to strive for the greatest possible national independence within <br>the monarchy. The most important agenda must be the defence of national interests.",
   choice1: "Yes",
   choice2: "No",
   answer: 3,
 },
 {
   question:
-    "After many years of passivity, Czech politicians are finally represented in the Austrian government and have the opportunity to cooperate with Vienna at the governmental level. In your opinion, should we continue to strengthen political relations and direct our ministers to Vienna?",
+    "After many years of passivity, Czech politicians are finally represented <br>in the Austrian government and have the opportunity to cooperate with Vienna <br>at the governmental level. <br>In your opinion, should we continue to strengthen political relations and direct our ministers to Vienna?",
   choice1: "Yes",
   choice2: "No",
   answer: 4,
@@ -144,14 +144,14 @@ let questions = [
 },
 {
   question:
-    "T. G. Masaryk, a candidate for the Parliament and a professor at the University of Prague, wrote: “An interest in Slovakia must be an important part of the Czech parties’ programme.” Do you share this opinion?",
+    "T. G. Masaryk, a candidate for the Parliament and a professor at the University <br>of Prague, wrote: “An interest in Slovakia must be an important part of the Czech parties’ programme.” <br>Do you share this opinion?",
   choice1: "Yes",
   choice2: "No",
   answer: 8,
 },
 {
   question:
-    "In international politics, Austria-Hungary focuses on Germany and Italy, while the Slavic nations sympathize with the East. Should Czech politics support Russia?",
+    "In international politics, Austria-Hungary focuses on Germany and Italy, while <br>the Slavic nations sympathize with the East. <br>Should Czech politics support Russia?",
   choice1: "Yes",
   choice2: "No",
   answer: 9,
@@ -166,7 +166,7 @@ let questions = [
 {
   question: "Which statement do you identify with?",
   choice1:
-    "„We want to provide for the persons unable to work by introducing an old-age and disability pension, and a pension for widows and orphans.“",
+    "„We want to provide for the persons unable to work <br>by introducing an old-age and disability pension, and a pension for widows and orphans.“",
   choice2: "„Let’s fight for the equality of nations and equality in our nation!”  ",
   choice3: "„Send many true guardians of the soil and fighters for its security at all times to Vienna!”",
   choice4:
@@ -255,7 +255,7 @@ progressBarFull.style.width = `${(questionCounter / MAX_QUESTIONS) * 100}%`;
 
 
 currentQuestion = availableQuestions[0];
-question.innerText = currentQuestion.question; //ta question na leve strane znaci ten div s tou otazkou. priradim k ni innerText, ktery si js najde tak, ze pujde podle currentQuestion a vezme si property question z te currentQuestion.
+question.innerHTML = currentQuestion.question; //ta question na leve strane znaci ten div s tou otazkou. priradim k ni innerText, ktery si js najde tak, ze pujde podle currentQuestion a vezme si property question z te currentQuestion.
 choices.forEach((choice) => {
   const number = choice.dataset["number"]; //tohle vezme to cislo z toho datasetu v html
   choice.innerHTML = currentQuestion["choice" + number]; //tomu parametru choice to priradi innerText, ktery je v currentQuestion["choice" + number]. Tohle znamena vlastne choice1, choice2 apod.
@@ -637,16 +637,16 @@ function hideButton3(){
 
 function firstPartyToSee(){
   if(allDivs[0].innerHTML.indexOf("CLERICAL PARTIES") !== -1) {
-    changingPartiesDiv.innerHTML = "<p>Clerical Parties</p><br><p>The clerical or Catholic parties were formed at the end of the 19th century. There were two main discourses among them: the Catholic-National and the Christian-Social one. </p><br><p>In 1897, the Catholic-Social parties merged into the National Catholic Party of the Kingdom of Bohemia. The National Catholic Party sought peaceful cooperation between the Slavic nations living in the Habsburg Monarchy without being dominated by the German-speaking elites. However, it remained loyal to the monarchy.</p><br><p>The Christian Social Party was founded in 1894. It developed in a more civic direction.</p><br><p>Both discourses were very conservative in their actions; they rejected the women’s movements and held the view that society is based on status. They saw both socialism and liberalism as systemic evil.</p>";
+    changingPartiesDiv.innerHTML = "<p>Clerical Parties</p><br><p>The clerical or Catholic parties were formed at the end of the 19th century. <br>There were two main discourses among them: the Catholic-National and the Christian-Social one. </p><br><p>In 1897, the Catholic-Social parties merged into the National Catholic Party <br>of the Kingdom of Bohemia. The National Catholic Party sought peaceful cooperation between the Slavic nations living in the Habsburg Monarchy without being dominated by the German-speaking elites. However, it remained loyal to the monarchy.</p><br><p>The Christian Social Party was founded in 1894. It developed in a more civic direction.</p><br><p>Both discourses were very conservative in their actions; they rejected the women’s movements and held the view that society is based on status. They saw both socialism and liberalism as systemic evil.</p>";
     partiesContainerDiv.style.backgroundImage = "url(../img/Klerikalove.jpg";
   } 
   if(allDivs[0].innerHTML.indexOf("YOUNG CZECHS") !== -1) {
-    changingPartiesDiv.innerHTML = "<p>Young Czechs (for our calculator, we connected them with Old Czechs)</p><br> <p>The National Liberal Party, in short, Young Czechs, was a political party operating in the Czech part of Austria-Hungary. It was established at the end of 1874 after long disputes in the National Party. The programme of the Young Czechs was nationalist and liberal. At the turn of the 19th and 20th centuries, the party held a dominant position in the Czech political spectrum. Karel Kramář, Alois Rašín and Miroslav Tyrš were among the party’s important members.</p><br><p>Old Czechs</p>The National Party, or Old Czechs, was the first political party in the Czech lands. It was founded in 1848 by a civil initiative and brought together various political and ideological groups. Initially, it included the Young Czechs, who, however, separated after long disputes in 1874. The influence of the National Party on political events – despite several years of being represented in the Imperial Council – was declining ever since.";
+    changingPartiesDiv.innerHTML = "<p>Young Czechs (for our calculator, we connected them with Old Czechs)</p><br> <p>The National Liberal Party, in short, Young Czechs, was a political party operating <br>in the Czech part of Austria-Hungary. It was established at the end of 1874 after long disputes in the National Party. The programme of the Young Czechs was nationalist and liberal. At the turn of the 19th and 20th centuries, the party held a dominant position in the Czech political spectrum. Karel Kramář, Alois Rašín and Miroslav Tyrš were among the party’s important members.</p><br><p>Old Czechs</p>The National Party, or Old Czechs, was the first political party in the Czech lands. <br>It was founded in 1848 by a civil initiative and brought together various political and ideological groups. Initially, it included the Young Czechs, who, however, separated after long disputes in 1874. <br>The influence of the National Party on political events – despite several years of being represented in the Imperial Council – was declining ever since.";
     partiesContainerDiv.style.backgroundImage = "url(../img/MladStar.jpg";
 
   }
   if(allDivs[0].innerHTML.indexOf("SOCIAL DEMOCRATS") !== -1) {
-    changingPartiesDiv.innerHTML = "<p>Social Democrats</p><br>The Social Democratic Czechoslavonic Workers’ Party was founded in 1893 by gaining independence from the Austrian Socialists. It was represented in the Imperial Council since 1897. At the same time, the social democratic representatives decided on a statement that lead to the establishment of the Democratic Czechoslavonic Workers’ Party. The party advocated for an eight-hour workday, a fair wage and universal suffrage. In the 1907 elections, they ran outside the Austrian Social Democracy for the first time. At the time, voters were divided into several groups (curia) and the weight of individual votes varied. Thus, although at first, it seemed that Social Democracy would win the Czech lands, after the conversion according to curia it ended second. During the First World War, the party was initially loyal to Austria-Hungary, but towards the end of the war, its left wing took part in anti-war demonstrations.";
+    changingPartiesDiv.innerHTML = "<p>Social Democrats</p><br>The Social Democratic Czechoslavonic Workers’ Party was founded in 1893 by gaining independence from the Austrian Socialists. It was represented in the Imperial Council since 1897. At the same time, the social democratic representatives decided on a statement that lead to the establishment of the Democratic Czechoslavonic Workers’ Party. The party advocated for an eight-hour workday, a fair wage <br>and universal suffrage. In the 1907 elections, they ran outside the Austrian Social Democracy for the first time. At the time, voters were divided into several groups (curia) and the weight of individual votes varied. Thus, although at first, it seemed that Social Democracy would win the Czech lands, after the conversion according to curia it ended second. <br>During the First World War, the party was initially loyal to Austria-Hungary, but towards the end of the war, its left wing took part in anti-war demonstrations.";
     partiesContainerDiv.style.backgroundImage = "url(../img/SocDem.jpg";
 
   }
@@ -656,7 +656,7 @@ function firstPartyToSee(){
 
   }
   if(allDivs[0].innerHTML.indexOf("CONSTITUTIONALIST BLOC") !== -1) {
-    changingPartiesDiv.innerHTML = "<p>Constitutionalist Bloc</p><br><p>In response to the lack of national parties, four schools of thought gradually appeared at the Nymburk congress of the Young Bohemians in 1894:</p><br><p>1) The Constitutionalist Right, which emphasized historical state law. It was headed by Alois Rašín, the future Minister of Finance of the First Republic. </p><br><p>2) The Radical Progressive Party, originally the Constitutionalist Left, which advocated for the idea of natural law. It was founded in 1897 by the Hajn brothers.</p><br><p>3) The Party of Progressive Socialists, founded in 1896 by progressive workers and anarchists.</p><br><p>4)The Czech Constitutionalist Party, which advocated for universal suffrage and the independence of Czech lands from the beginning. </p><br><p>Before the elections, there were strong anti-clerical feelings in the Czech lands; this led to the unification of national social, radically progressive, and constitutionalist representatives. The Alliance of Czech Constitutionalist Democracy was established. Karel Baxa, Václav Klofáč and Václav Hajn were among those who joined the Imperial Council as members of this Constitutionalist Bloc. A year later, the Czech Constitutionalist Party merged with the Radical Progressive Party, which led to the establishment of the Czech Constitutionalist Party.</p> ";
+    changingPartiesDiv.innerHTML = "<p>Constitutionalist Bloc</p><br><p>In response to the lack of national parties, four schools of thought gradually appeared at the Nymburk congress of the Young Bohemians in 1894:</p><br><p>1) The Constitutionalist Right, which emphasized historical state law. It was headed by Alois Rašín, the future Minister of Finance of the First Republic. </p><br><p>2) The Radical Progressive Party, originally the Constitutionalist Left, which advocated for the idea of natural law. It was founded in 1897 by the Hajn brothers.</p><br><p>3) The Party of Progressive Socialists, founded in 1896 by progressive workers <br>and anarchists.</p><br><p>4)The Czech Constitutionalist Party, which advocated for universal suffrage <br>and the independence of Czech lands from the beginning. </p><br><p>Before the elections, there were strong anti-clerical feelings in the Czech lands; this led to the unification of national social, radically progressive, and constitutionalist representatives. The Alliance of Czech Constitutionalist Democracy was established. Karel Baxa, Václav Klofáč and Václav Hajn were among those who joined the Imperial Council as members of this Constitutionalist Bloc. A year later, the Czech Constitutionalist Party merged with the Radical Progressive Party, which led <br>to the establishment of the Czech Constitutionalist Party.</p> ";
     partiesContainerDiv.style.backgroundImage = "url(../img/Cstpd.jpg";
 
   }
@@ -680,16 +680,16 @@ something.addEventListener("mousedown", (e) => {
 
   function changeBackground(){
     if(selectedDiv.innerHTML.indexOf("CLERICAL PARTIES") !== -1) {
-      changingPartiesDiv.innerHTML = "<p>Clerical Parties</p><br><p>The clerical or Catholic parties were formed at the end of the 19th century. There were two main discourses among them: the Catholic-National and the Christian-Social one. </p><br><p>In 1897, the Catholic-Social parties merged into the National Catholic Party of the Kingdom of Bohemia. The National Catholic Party sought peaceful cooperation between the Slavic nations living in the Habsburg Monarchy without being dominated by the German-speaking elites. However, it remained loyal to the monarchy.</p><br><p>The Christian Social Party was founded in 1894. It developed in a more civic direction.</p><br><p>Both discourses were very conservative in their actions; they rejected the women’s movements and held the view that society is based on status. They saw both socialism and liberalism as systemic evil.</p>";
+      changingPartiesDiv.innerHTML = "<p>Clerical Parties</p><br><p>The clerical or Catholic parties were formed at the end of the 19th century. <br>There were two main discourses among them: the Catholic-National and the Christian-Social one. </p><br><p>In 1897, the Catholic-Social parties merged into the National Catholic Party <br>of the Kingdom of Bohemia. The National Catholic Party sought peaceful cooperation between the Slavic nations living in the Habsburg Monarchy without being dominated by the German-speaking elites. However, it remained loyal to the monarchy.</p><br><p>The Christian Social Party was founded in 1894. It developed in a more civic direction.</p><br><p>Both discourses were very conservative in their actions; they rejected the women’s movements and held the view that society is based on status. They saw both socialism and liberalism as systemic evil.</p>";
       partiesContainerDiv.style.backgroundImage = "url(../img/Klerikalove.jpg";
       // partiesContainerDiv.classList.add("backgroundImage");
     }
     if(selectedDiv.innerHTML.indexOf("YOUNG CZECHS") !== -1) {
-      changingPartiesDiv.innerHTML = "<p>Young Czechs (for our calculator, we connected them with Old Czechs)</p><br> <p>The National Liberal Party, in short, Young Czechs, was a political party operating in the Czech part of Austria-Hungary. It was established at the end of 1874 after long disputes in the National Party. The programme of the Young Czechs was nationalist and liberal. At the turn of the 19th and 20th centuries, the party held a dominant position in the Czech political spectrum. Karel Kramář, Alois Rašín and Miroslav Tyrš were among the party’s important members.</p><br><p>Old Czechs</p>The National Party, or Old Czechs, was the first political party in the Czech lands. It was founded in 1848 by a civil initiative and brought together various political and ideological groups. Initially, it included the Young Czechs, who, however, separated after long disputes in 1874. The influence of the National Party on political events – despite several years of being represented in the Imperial Council – was declining ever since.";
+      changingPartiesDiv.innerHTML = "<p>Young Czechs (for our calculator, we connected them with Old Czechs)</p><br> <p>The National Liberal Party, in short, Young Czechs, was a political party operating <br>in the Czech part of Austria-Hungary. It was established at the end of 1874 after long disputes in the National Party. The programme of the Young Czechs was nationalist and liberal. At the turn of the 19th and 20th centuries, the party held a dominant position in the Czech political spectrum. Karel Kramář, Alois Rašín and Miroslav Tyrš were among the party’s important members.</p><br><p>Old Czechs</p>The National Party, or Old Czechs, was the first political party in the Czech lands. <br>It was founded in 1848 by a civil initiative and brought together various political and ideological groups. Initially, it included the Young Czechs, who, however, separated after long disputes in 1874. <br>The influence of the National Party on political events – despite several years of being represented in the Imperial Council – was declining ever since.";
       partiesContainerDiv.style.backgroundImage = "url(../img/MladStar.jpg";
     }
     if(selectedDiv.innerHTML.indexOf("SOCIAL DEMOCRATS") !== -1) {
-      changingPartiesDiv.innerHTML = "<p>Social Democrats</p><br>The Social Democratic Czechoslavonic Workers’ Party was founded in 1893 by gaining independence from the Austrian Socialists. It was represented in the Imperial Council since 1897. At the same time, the social democratic representatives decided on a statement that lead to the establishment of the Democratic Czechoslavonic Workers’ Party. The party advocated for an eight-hour workday, a fair wage and universal suffrage. In the 1907 elections, they ran outside the Austrian Social Democracy for the first time. At the time, voters were divided into several groups (curia) and the weight of individual votes varied. Thus, although at first, it seemed that Social Democracy would win the Czech lands, after the conversion according to curia it ended second. During the First World War, the party was initially loyal to Austria-Hungary, but towards the end of the war, its left wing took part in anti-war demonstrations.";
+      changingPartiesDiv.innerHTML = "<p>Social Democrats</p><br>The Social Democratic Czechoslavonic Workers’ Party was founded in 1893 by gaining independence from the Austrian Socialists. It was represented in the Imperial Council since 1897. At the same time, the social democratic representatives decided on a statement that lead to the establishment of the Democratic Czechoslavonic Workers’ Party. The party advocated for an eight-hour workday, a fair wage <br>and universal suffrage. In the 1907 elections, they ran outside the Austrian Social Democracy for the first time. At the time, voters were divided into several groups (curia) and the weight of individual votes varied. Thus, although at first, it seemed that Social Democracy would win the Czech lands, after the conversion according to curia it ended second. <br>During the First World War, the party was initially loyal to Austria-Hungary, but towards the end of the war, its left wing took part in anti-war demonstrations.";
       partiesContainerDiv.style.backgroundImage = "url(../img/SocDem.jpg";
     }
     if(selectedDiv.innerHTML.indexOf("AGRARIANS") !== -1) {
@@ -697,7 +697,7 @@ something.addEventListener("mousedown", (e) => {
       partiesContainerDiv.style.backgroundImage = "url(../img/Agrarnici.jpg";
     }
     if(selectedDiv.innerHTML.indexOf("CONSTITUTIONALIST BLOC") !== -1) {
-      changingPartiesDiv.innerHTML = "<p>Constitutionalist Bloc</p><br><p>In response to the lack of national parties, four schools of thought gradually appeared at the Nymburk congress of the Young Bohemians in 1894:</p><br><p>1) The Constitutionalist Right, which emphasized historical state law. It was headed by Alois Rašín, the future Minister of Finance of the First Republic. </p><br><p>2) The Radical Progressive Party, originally the Constitutionalist Left, which advocated for the idea of natural law. It was founded in 1897 by the Hajn brothers.</p><br><p>3) The Party of Progressive Socialists, founded in 1896 by progressive workers and anarchists.</p><br><p>4)The Czech Constitutionalist Party, which advocated for universal suffrage and the independence of Czech lands from the beginning. </p><br><p>Before the elections, there were strong anti-clerical feelings in the Czech lands; this led to the unification of national social, radically progressive, and constitutionalist representatives. The Alliance of Czech Constitutionalist Democracy was established. Karel Baxa, Václav Klofáč and Václav Hajn were among those who joined the Imperial Council as members of this Constitutionalist Bloc. A year later, the Czech Constitutionalist Party merged with the Radical Progressive Party, which led to the establishment of the Czech Constitutionalist Party.</p>";
+      changingPartiesDiv.innerHTML = "<p>Constitutionalist Bloc</p><br><p>In response to the lack of national parties, four schools of thought gradually appeared at the Nymburk congress of the Young Bohemians in 1894:</p><br><p>1) The Constitutionalist Right, which emphasized historical state law. It was headed by Alois Rašín, the future Minister of Finance of the First Republic. </p><br><p>2) The Radical Progressive Party, originally the Constitutionalist Left, which advocated for the idea of natural law. It was founded in 1897 by the Hajn brothers.</p><br><p>3) The Party of Progressive Socialists, founded in 1896 by progressive workers <br>and anarchists.</p><br><p>4)The Czech Constitutionalist Party, which advocated for universal suffrage <br>and the independence of Czech lands from the beginning. </p><br><p>Before the elections, there were strong anti-clerical feelings in the Czech lands; this led to the unification of national social, radically progressive, and constitutionalist representatives. The Alliance of Czech Constitutionalist Democracy was established. Karel Baxa, Václav Klofáč and Václav Hajn were among those who joined the Imperial Council as members of this Constitutionalist Bloc. A year later, the Czech Constitutionalist Party merged with the Radical Progressive Party, which led <br>to the establishment of the Czech Constitutionalist Party.</p> ";
       partiesContainerDiv.style.backgroundImage = "url(../img/Cstpd.jpg";
     }
   }
