@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="2_intro_style.css" />
     <title>Document</title>
 </head>
-<body>
+<body oncontextmenu="return false">
   <div class="container-intro">
     <div class="question-container">
       <div id="question">Unfortunately you will have to wait till 1919 when women were allowed to vote in our country.
@@ -34,10 +34,15 @@
     <script type="text/javascript">
       resetButton.classList.add("hidden");
 
+
       const choiceRestart = document.querySelector(".choice-text-restart");
-      choiceRestart.addEventListener("click", function() {
-        return window.location.assign("./game.html");
-      });
+        choiceRestart.addEventListener("pointerdown", (e) => {
+          choiceRestart.classList.add("choice-text-restart-active")
+          });
+        choiceRestart.addEventListener("pointerup", function() {
+          choiceRestart.classList.remove("choice-text-restart-active")
+          return window.location.assign("./game.html");
+          });
 
       </script>
 </body>

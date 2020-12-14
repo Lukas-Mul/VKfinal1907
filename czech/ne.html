@@ -6,8 +6,8 @@
     <link rel="stylesheet" href="2_intro_style.css" />
     <title>Document</title>
 </head>
-<body>
-    <div class="container-intro">
+<body oncontextmenu="return false">
+  <div class="container-intro">
       <div class="question-container">
         <div id="question">Váš hlas se v těchto volbách počítá. Můžete pokračovat.</div>
         </div>
@@ -33,9 +33,13 @@
         resetButton.classList.add("hidden");
 
         const choiceNext = document.querySelector(".choice-text-next");
-      choiceNext.addEventListener("click", function() {
-        return window.location.assign("./game1.html");
-      });
-        </script>
+          choiceNext.addEventListener("pointerdown", (e) => {
+          choiceNext.classList.add("choice-text-next-active")
+             });
+          choiceNext.addEventListener("pointerup", function() {
+          choiceNext.classList.remove("choice-text-next-active")
+          return window.location.assign("./game1.html");
+            });
+      </script>
 </body>
 </html>

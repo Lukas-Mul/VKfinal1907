@@ -4,12 +4,15 @@ const questionContainerMuz = document.querySelector(".question-container-muz");
 const restartDiv = document.querySelector(".restartDiv");
 const continueDiv = document.querySelector(".continue");
 
+const choiceTextAno = document.querySelector(".choice-text-ano");
+const choiceTextNe = document.querySelector(".choice-text-ne");
+
 
 
 
 // IDLE TIMEOUT - na nabidku, jestli bude pokracovat
 (function() {
-  const idleDurationSecs = 110;
+  const idleDurationSecs = 170;
   let redirectUrl = '../index.html';  // Redirect idle users to this URL
   let idleTimeout;
   let resetIdleTimeout = function() {
@@ -38,7 +41,7 @@ const continueDiv = document.querySelector(".continue");
 
 // IDLE TIMEOUT - na presmerovani na zacatek
 (function() {
-  const idleDurationSecs = 120;
+  const idleDurationSecs = 180;
   let redirectUrl = '../index.html';  // Redirect idle users to this URL
   let idleTimeout;
   let resetIdleTimeout = function() {
@@ -57,32 +60,18 @@ const continueDiv = document.querySelector(".continue");
 
 
 
-(function() {
-  var idleDurationSecs = 120;
-  var redirectUrl = '../index.html';  // Redirect idle users to this URL
-  var idleTimeout;
 
-  var resetIdleTimeout = function() {
-    if(idleTimeout) clearTimeout(idleTimeout);
-
-    idleTimeout = setTimeout(function(){
-      location.href = redirectUrl
-    }, idleDurationSecs * 1000);
-  };
-
-  resetIdleTimeout();
-
-  ['click', 'touchstart', 'mousemove'].forEach(function(evt) {
-    document.addEventListener(evt, resetIdleTimeout, false)
-  });
-})();
 
 // RESETBUTTON vpravo nahore
 const resetButton = document.createElement("button")
 resetButton.className = "resetButton";
 resetButton.innerText = "< RESTART";
 questionContainer.appendChild(resetButton);
-resetButton.addEventListener("click", function() {
+resetButton.addEventListener("pointerdown", function(){
+  resetButton.classList.add("resetButtonActive")
+});
+resetButton.addEventListener("pointerup", function() {
+  resetButton.classList.remove("resetButtonActive")
     return window.location.assign("../index.html");
 });
 
@@ -91,17 +80,53 @@ const resetButtonDiv = document.createElement("button")
 resetButtonDiv.className = "resetButtonDiv";
 resetButtonDiv.innerText = " < RESTART";
 restartDiv.appendChild(resetButtonDiv);
-resetButtonDiv.addEventListener("click", function() {
-    return window.location.assign("../index.html");
+resetButtonDiv.addEventListener("pointerdown", function(){
+  resetButtonDiv.classList.add("resetButtonDivActive")
 });
-
+resetButtonDiv.addEventListener("pointerup", function() {
+  resetButtonDiv.classList.remove("resetButtonDivActive")
+  return window.location.assign("../index.html");
+});
 
 // TLACITKO "ANO", PRO POKRACOVANI PO NECINNOSTI
 const continueButton = document.createElement("button")
 continueButton.className = "continueButton";
 continueButton.innerText = "ANO";
 continueDiv.appendChild(continueButton);
-continueButton.addEventListener("click", function() {
+continueButton.addEventListener("pointerdown", function(){
+  continueButton.classList.add("continueButtonActive")
+});
+continueButton.addEventListener("pointerup", function() {
+  continueButton.classList.remove("continueButtonActive")
   timeoutSign.classList.add("hideTimeoutSign");
   overlay2.classList.add("hideOverlay2");
 });
+
+// ZISKAT A VYMAZAT TRIDU ACTIVE - PRO ZATLACENI TLACITKA ODPOVEDI
+function active(){
+  // aktivuje tridu activeAno a activeNe na normalnich otazkach
+  function activeAno (){
+    choiceTextAno.addEventListener("pointerdown", (e) => {
+    choiceTextAno.classList.add("activeAno")
+    })};
+    activeAno();
+
+  function deactiveAno (){
+    choiceTextAno.addEventListener("pointerup", (e) => {
+    choiceTextAno.classList.remove("activeAno")
+    })};
+    deactiveAno();
+
+  function activeNe (){
+    choiceTextNe.addEventListener("pointerdown", (e) => {
+    choiceTextNe.classList.add("activeNe")
+    })};
+    activeNe();
+
+  function deactiveNe (){
+    choiceTextNe.addEventListener("pointerup", (e) => {
+    choiceTextNe.classList.remove("activeNe")
+    })};
+    deactiveNe();
+  };
+  active();

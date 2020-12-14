@@ -7,16 +7,24 @@
     <link rel="stylesheet" href="./2_intro_style.css">
     <title>VIDEO</title>
   </head>
-  <body>
+  <body oncontextmenu="return false">
 
     <video autoplay="autoplay" class="video" id="video" src="../video/video.mp4"></video>
      
     <div class="content">
       <input id="btnReplay" onclick="replay()" type="image" src="../img/reply_01.png">
-      <input id="btnSkip" onclick="skip()" type="image" src="../img/skip_01.png">
+      <input id="btnSkip" class="hideSkipButton" onclick="skip()" type="image" src="../img/skip_01.png">
     </div>
 
 <script type="text/javascript">
+
+// Ukaze skip button za 10 sekund
+const hideSkipButton=document.querySelector(".hideSkipButton")
+ setTimeout(function() { foo(); }, 10000);
+ function foo(){
+   hideSkipButton.classList.remove("hideSkipButton");
+ };
+
     // Variables
       const video = document.getElementById("video");
       const timeLine = document.querySelector(".timeLine")    

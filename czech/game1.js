@@ -2,7 +2,7 @@ const timeoutSign = document.querySelector(".timeoutSign");
 
 // IDLE TIMEOUT - na nabidku, jestli bude pokracovat
 (function() {
-  const idleDurationSecs = 110;
+  const idleDurationSecs = 170;
   let redirectUrl = '../index.html';  // Redirect idle users to this URL
   let idleTimeout;
   let resetIdleTimeout = function() {
@@ -31,7 +31,7 @@ const timeoutSign = document.querySelector(".timeoutSign");
 
 // IDLE TIMEOUT - na presmerovani na zacatek
 (function() {
-  const idleDurationSecs = 120;
+  const idleDurationSecs = 180;
   let redirectUrl = '../index.html';  // Redirect idle users to this URL
   let idleTimeout;
   let resetIdleTimeout = function() {
@@ -74,6 +74,10 @@ const lastResetButtonDiv = document.querySelector(".lastResetButtonDiv");
 
 const chosenAnswer = document.querySelectorAll(".choice-container");
 const answerContainer = document.querySelector(".answer-container")
+
+const choiceTextAno = document.querySelector(".choice-text-ano")
+const choiceTextNe = document.querySelector(".choice-text-ne")
+const lastQuestionText = document.querySelector(".last-question-text")
 
 
 // VARIABLES
@@ -192,7 +196,11 @@ const resetButton = document.createElement("button")
 resetButton.className = "resetButton";
 resetButton.innerText = "< RESTART";
 questionContainer.appendChild(resetButton);
-resetButton.addEventListener("click", function() {
+resetButton.addEventListener("pointerdown", function(){
+  resetButton.classList.add("resetButtonActive")
+});
+resetButton.addEventListener("pointerup", function() {
+  resetButton.classList.remove("resetButtonActive")
     return window.location.assign("../index.html");
 });
 
@@ -201,8 +209,12 @@ const resetButtonDiv = document.createElement("button")
 resetButtonDiv.className = "resetButtonDiv";
 resetButtonDiv.innerText = " < RESTART";
 restartDiv.appendChild(resetButtonDiv);
-resetButtonDiv.addEventListener("click", function() {
-    return window.location.assign("../index.html");
+resetButtonDiv.addEventListener("pointerdown", function(){
+  resetButtonDiv.classList.add("resetButtonDivActive")
+});
+resetButtonDiv.addEventListener("pointerup", function() {
+  resetButtonDiv.classList.remove("resetButtonDivActive")
+  return window.location.assign("../index.html");
 });
 
 // RESETBUTTON na posledni strance
@@ -210,8 +222,12 @@ const resetButtonLast = document.createElement("button")
 resetButtonLast.className = "lastResetButton";
 resetButtonLast.innerText = "< RESTART";
 lastResetButtonDiv.appendChild(resetButtonLast);
-lastResetButtonDiv.addEventListener("click", function() {
-    return window.location.assign("../index.html");
+resetButtonLast.addEventListener("pointerdown", function(){
+  resetButtonLast.classList.add("lastResetButtonActive")
+});
+lastResetButtonDiv.addEventListener("pointerup", function() {
+  resetButtonLast.classList.remove("lastResetButtonActive")
+  return window.location.assign("../index.html");
 });
 
 // TLACITKO "ANO", PRO POKRACOVANI PO NECINNOSTI
@@ -219,7 +235,11 @@ const continueButton = document.createElement("button")
 continueButton.className = "continueButton";
 continueButton.innerText = "ANO";
 continueDiv.appendChild(continueButton);
-continueButton.addEventListener("click", function() {
+continueButton.addEventListener("pointerdown", function(){
+  continueButton.classList.add("continueButtonActive")
+});
+continueButton.addEventListener("pointerup", function() {
+  continueButton.classList.remove("continueButtonActive")
   timeoutSign.classList.add("hideTimeoutSign");
   overlay2.classList.add("hideOverlay2");
 });
@@ -244,23 +264,14 @@ questionCounter++
 // Update the progress bar
 progressBarFull.style.width = `${(questionCounter / MAX_QUESTIONS) * 100}%`;
 
-question.classList.add("slide");
-// question.classList.remove("goAway");
-
-
-
-
+// prida tridu slide, diky ktere text otazek slidne doleva
 function slideAway(){
-  answerContainer.addEventListener("mousedown", function(){
-    question.classList.remove("slide");
-    // question.classList.add("goAway");
-
-  })
-}
-
-slideAway();
-
-
+  question.classList.add("slide");
+    answerContainer.addEventListener("pointerdown", (e) => {
+      question.classList.remove("slide");
+    });
+  }
+  slideAway();
 
 currentQuestion = availableQuestions[0];
 question.innerHTML = currentQuestion.question; //ta question na leve strane znaci ten div s tou otazkou. priradim k ni innerText, ktery si js najde tak, ze pujde podle currentQuestion a vezme si property question z te currentQuestion.
@@ -272,10 +283,39 @@ availableQuestions.splice(questionIndex, 1); //Tohle vyhodi tu otazku, ktera byl
 acceptingAnswers = true; //tohle umozni odpovidat na otazky az tehdy, kdyz bylo vsechno nacteno (proto je na zacatku dana hodnota false)
 };
 
+// ZISKAT A VYMAZAT TRIDU ACTIVE - PRO ZATLACENI TLACITKA ODPOVEDI
+function active(){
+  // aktivuje tridu activeAno a activeNe na normalnich otazkach
+  function activeAno (){
+    choiceTextAno.addEventListener("pointerdown", (e) => {
+    choiceTextAno.classList.add("activeAno")
+    })};
+    activeAno();
+
+  function deactiveAno (){
+    choiceTextAno.addEventListener("pointerup", (e) => {
+    choiceTextAno.classList.remove("activeAno")
+    })};
+    deactiveAno();
+
+  function activeNe (){
+    choiceTextNe.addEventListener("pointerdown", (e) => {
+    choiceTextNe.classList.add("activeNe")
+    })};
+    activeNe();
+
+  function deactiveNe (){
+    choiceTextNe.addEventListener("pointerup", (e) => {
+    choiceTextNe.classList.remove("activeNe")
+    })};
+    deactiveNe();
+  };
+  active();
+
 
 // DOSTAT NOVOU OTAZKU A POCITANI BODU
 choices.forEach((choice) => {
-choice.addEventListener("click", (e) => {
+  choice.addEventListener("pointerup", (e) => {
   //kdyz kliknou na tu odpoved, tak tohle mi da reference na to, na co vlastne klikli
   if (!acceptingAnswers) return; //jestli jeste neakceptujeme odpoved, tak to budeme ignorovat
 
@@ -350,11 +390,18 @@ choice.addEventListener("click", (e) => {
       if (
         currentQuestion.answer == 10 &&
         (selectedAnswer == 1 || selectedAnswer == 2)
-      ) {
-        item.classList.add("last-question-text");
-      }
-    });
-  }
+        ) {
+          item.classList.add("last-question-text");
+          item.addEventListener("pointerdown", (e) => {
+            item.classList.add("activeLast")
+            })
+          item.addEventListener("pointerup", (e) => {
+            item.classList.remove("activeLast")
+            })
+        }
+      });
+    }
+  addClassLastAnswer();
 
   function addClassLastText() {
     const hiddenContainer5 = document.querySelectorAll(".choice-container");
@@ -375,11 +422,13 @@ choice.addEventListener("click", (e) => {
     button1.className = "button1";
     button1.innerText = "ZJISTIT VÍC"
     questionContainer.appendChild(button1)
-    button1.addEventListener("click", function(){
-      // add class hidden na overlay element, takze kliknutim se tam ten overlay element zobrazi a udela vsechno ostatni tmavym
+    button1.addEventListener("pointerdown", function(){
+      button1.classList.add("moreInfo")
+    });
+    button1.addEventListener("pointerup", function(){
+      button1.classList.remove("moreInfo")
       overlay.classList.remove("hidden11");
       explanation1Flex.classList.add("translate");
-      
     })
   }
 
@@ -390,11 +439,13 @@ choice.addEventListener("click", (e) => {
     button2.className = "button2";
     button2.innerText = "ZPĚT"
     explanation1Flex.appendChild(button2)
-    button2.addEventListener("click", function(){
-      overlay.classList.add("hidden11");
+    button2.addEventListener("pointerdown", function(){
+      button2.classList.add("backFromExplanation")
+    });
+    button2.addEventListener("pointerup", function(){
+      button2.classList.remove("backFromExplanation")
       explanation1Flex.classList.remove("translate");
-
-
+      overlay.classList.add("hidden11");
     })
   }
 
@@ -410,11 +461,13 @@ function createButton3 (){
   button3.className = "button3";
   button3.innerText = "ZJISTIT VÍC"
   questionContainer.appendChild(button3)
-  button3.addEventListener("click", function(){
+  button3.addEventListener("pointerdown", function(){
+    button3.classList.add("moreInfo")
+  });
+  button3.addEventListener("pointerup", function(){
+    button3.classList.remove("moreInfo")
     overlay.classList.remove("hidden11");
     explanation2Flex.classList.add("translate");
-
-  
   })
 }
 
@@ -425,26 +478,21 @@ function createButton4 (){
   button4.className = "button4";
   button4.innerText = "ZPĚT"
   explanation2Flex.appendChild(button4)
-  button4.addEventListener("click", function(){
+  button4.addEventListener("pointerdown", function(){
+    button4.classList.add("backFromExplanation")
+  });
+  button4.addEventListener("pointerup", function(){
+    button4.classList.remove("backFromExplanation")
     explanation2Flex.classList.remove("translate");
     overlay.classList.add("hidden11");
   })
 }
 
-// SKRYT BUTTON1
+// SKRYT BUTTON3 - skryje vysvetlivku (button 3)
 function hideButton3(){
   let oznaceniButton3 = document.querySelector(".button3");
     oznaceniButton3.classList.add("hideButton3");;
 }
-
-// function slideAway(){
-//   answerContainer.addEventListener("mouseup", function(){
-//     questionContainer.classList.toggle("slide");
-//     console.log('slide');
-//   })
-// }
-
-// slideAway();
 
 // FUNKCE countPoints - Pocitani bodu
   function countPoints() {
@@ -659,7 +707,7 @@ function firstPartyToSee(){
     partiesContainerDiv.style.backgroundImage = "url(../img/Klerikalove.jpg";
   } 
   if(allDivs[0].innerHTML.indexOf("MLADOČEŠI") !== -1) {
-    changingPartiesDiv.innerHTML = "<p>Mladočeši (v rámci kalkulačky je máme spojené do mladočeši/staročeši)</p><br> <p>Národní strana svobodomyslná, zkráceně mladočeši, byla politickou stranou působící v českých zemích Rakouska-Uherska. Vznikla na konci roku 1874 po dlouhotrvajících sporech v Národní straně. Program mladočechů byl pronárodní a liberální. <br>Na přelomu 19. a 20. století strana zaujímala dominantní postavení v českém politickém spektru. Působili v ní například Karel Kramář, Alois Rašín a Miroslav Tyrš.</p><br><p>Staročeši</p>Národní strana neboli staročeši, byla vůbec první politickou stranou v českých zemích. Vznikla z občanské iniciativy v roce 1848 a sdružovala v sobě rozličná politická a ideová uskupení. Zpočátku byli její součástí i mladočeši, kteří se však <br>po dlouhotrvajících sporech v roce 1874 oddělili. <br>Vliv Národní strany na politické dění – i přes několikaleté zastoupení v Říšské radě – od té doby slábl.";
+    changingPartiesDiv.innerHTML = "<p>Mladočeši (v rámci kalkulačky je máme spojené do mladočeši/staročeši)</p><br> <p>Národní strana svobodomyslná, zkráceně mladočeši, byla politickou stranou působící v českých zemích Rakouska-Uherska. Vznikla na konci roku 1874 po dlouhotrvajících sporech v Národní straně. Program mladočechů byl pronárodní a liberální. <br>Na přelomu 19. a 20. století strana zaujímala dominantní postavení v českém politickém spektru. Působili v ní například Karel Kramář, Alois Rašín a Miroslav Tyrš.</p><br><p>Staročeši</p><br>Národní strana neboli staročeši, byla vůbec první politickou stranou v českých zemích. Vznikla z občanské iniciativy v roce 1848 a sdružovala v sobě rozličná politická a ideová uskupení. Zpočátku byli její součástí i mladočeši, kteří se však <br>po dlouhotrvajících sporech v roce 1874 oddělili. <br>Vliv Národní strany na politické dění – i přes několikaleté zastoupení v Říšské radě – od té doby slábl.";
     partiesContainerDiv.style.backgroundImage = "url(../img/MladStar.jpg";
 
   }
@@ -674,7 +722,7 @@ function firstPartyToSee(){
 
   }
   if(allDivs[0].innerHTML.indexOf("STÁTOPRÁVNÍ BLOK") !== -1) {
-    changingPartiesDiv.innerHTML = "<p>Státoprávní blok</p><br><p>V reakci na nedostatek národních stran se na nymburském sjezdu mladočechů v roce 1894 postupně oddělily čtyři proudy:</p><br><p>1) Státoprávní pravice, která kladla důraz na historické státní právo. V jejím čele stál budoucí prvorepublikový ministr financí Alois Rašín.</p><br><p>2) Radikálně pokroková strana, původně Státoprávní levice, která obhajovala ideu přirozeného práva. Byla založena v roce 1897 bratry Hajnovými.</p><br><p>3) Strana pokrokových socialistů, založena v roce 1896 pokrokovými dělníky <br>a anarchisty.</p><br><p>4) Česká strana státoprávní, která od začátku prosazovala všeobecné volební právo <br>a osamostatnění českých zemí.</p><br><p>Před volbami v českých zemích panovaly silně antiklerikální postoje, které vedly <br>ke sjednocení národně sociálních, radikálně pokrokových a státoprávních poslanců. Vznikla Aliance české státoprávní demokracie. Za tento státoprávní blok se do Říšské rady dostali například Karel Baxa, Václav Klofáč a Václav Hajn. O rok později <br>se Česká strana státoprávní sloučila s Radikálně pokrokovou stranou, což vedlo <br>ke vzniku České strany státoprávně pokrokové.</p> ";
+    changingPartiesDiv.innerHTML = "<p>Státoprávní blok</p><br><p>V reakci na nedostatek národních stran se na nymburském sjezdu mladočechů v roce 1894 postupně oddělily čtyři proudy:</p><br><p>1) Státoprávní pravice, která kladla důraz na historické státní právo. V jejím čele stál budoucí prvorepublikový ministr financí Alois Rašín.</p><p>2) Radikálně pokroková strana, původně Státoprávní levice, která obhajovala ideu přirozeného práva. Byla založena v roce 1897 bratry Hajnovými.</p><p>3) Strana pokrokových socialistů, založena v roce 1896 pokrokovými dělníky <br>a anarchisty.</p><p>4) Česká strana státoprávní, která od začátku prosazovala všeobecné volební právo <br>a osamostatnění českých zemí.</p><br><p>Před volbami v českých zemích panovaly silně antiklerikální postoje, které vedly <br>ke sjednocení národně sociálních, radikálně pokrokových a státoprávních poslanců. Vznikla Aliance české státoprávní demokracie. Za tento státoprávní blok se do Říšské rady dostali například Karel Baxa, Václav Klofáč a Václav Hajn. O rok později <br>se Česká strana státoprávní sloučila s Radikálně pokrokovou stranou, což vedlo <br>ke vzniku České strany státoprávně pokrokové.</p> ";
     partiesContainerDiv.style.backgroundImage = "url(../img/Cstpd.jpg";
 
   }
@@ -683,15 +731,15 @@ firstPartyToSee();
 
 //Switch color of active link
 party.forEach(function (item) {
-  item.addEventListener("mousedown", function (e) {
+  item.addEventListener("pointerup", function (e) {
     partiesContainerDiv.querySelector(".current").classList.remove("current");
     item.classList.add("current");
   });
 });
 
 function clickOnDiv(){
-allDivs.forEach((something) => {
-something.addEventListener("mousedown", (e) => {
+  allDivs.forEach((something) => {
+  something.addEventListener("pointerup", (e) => {
   
   const selectedDiv = e.target; 
   // const selectedNumberDiv = selectedDiv.dataset["number"]; 
@@ -703,7 +751,7 @@ something.addEventListener("mousedown", (e) => {
       // partiesContainerDiv.classList.add("backgroundImage");
     }
     if(selectedDiv.innerHTML.indexOf("MLADOČEŠI") !== -1) {
-      changingPartiesDiv.innerHTML = "<p>Mladočeši (v rámci kalkulačky je máme spojené do mladočeši/staročeši)</p><br> <p>Národní strana svobodomyslná, zkráceně mladočeši, byla politickou stranou působící v českých zemích Rakouska-Uherska. Vznikla na konci roku 1874 po dlouhotrvajících sporech v Národní straně. Program mladočechů byl pronárodní a liberální. <br>Na přelomu 19. a 20. století strana zaujímala dominantní postavení v českém politickém spektru. Působili v ní například Karel Kramář, Alois Rašín a Miroslav Tyrš.</p><br><p>Staročeši</p>Národní strana neboli staročeši, byla vůbec první politickou stranou v českých zemích. Vznikla z občanské iniciativy v roce 1848 a sdružovala v sobě rozličná politická a ideová uskupení. Zpočátku byli její součástí i mladočeši, kteří se však <br>po dlouhotrvajících sporech v roce 1874 oddělili. <br>Vliv Národní strany na politické dění – i přes několikaleté zastoupení v Říšské radě – od té doby slábl.";
+      changingPartiesDiv.innerHTML = "<p>Mladočeši (v rámci kalkulačky je máme spojené do mladočeši/staročeši)</p><br> <p>Národní strana svobodomyslná, zkráceně mladočeši, byla politickou stranou působící v českých zemích Rakouska-Uherska. Vznikla na konci roku 1874 po dlouhotrvajících sporech v Národní straně. Program mladočechů byl pronárodní a liberální. <br>Na přelomu 19. a 20. století strana zaujímala dominantní postavení v českém politickém spektru. Působili v ní například Karel Kramář, Alois Rašín a Miroslav Tyrš.</p><br><p>Staročeši</p><br>Národní strana neboli staročeši, byla vůbec první politickou stranou v českých zemích. Vznikla z občanské iniciativy v roce 1848 a sdružovala v sobě rozličná politická a ideová uskupení. Zpočátku byli její součástí i mladočeši, kteří se však <br>po dlouhotrvajících sporech v roce 1874 oddělili. <br>Vliv Národní strany na politické dění – i přes několikaleté zastoupení v Říšské radě – od té doby slábl.";
       partiesContainerDiv.style.backgroundImage = "url(../img/MladStar.jpg";
     }
     if(selectedDiv.innerHTML.indexOf("SOCIÁLNÍ DEMOKRACIE") !== -1) {
@@ -715,7 +763,7 @@ something.addEventListener("mousedown", (e) => {
       partiesContainerDiv.style.backgroundImage = "url(../img/Agrarnici.jpg";
     }
     if(selectedDiv.innerHTML.indexOf("STÁTOPRÁVNÍ BLOK") !== -1) {
-      changingPartiesDiv.innerHTML = "<p>Státoprávní blok</p><br><p>V reakci na nedostatek národních stran se na nymburském sjezdu mladočechů v roce 1894 postupně oddělily čtyři proudy:</p><br><p>1) Státoprávní pravice, která kladla důraz na historické státní právo. V jejím čele stál budoucí prvorepublikový ministr financí Alois Rašín.</p><br><p>2) Radikálně pokroková strana, původně Státoprávní levice, která obhajovala ideu přirozeného práva. Byla založena v roce 1897 bratry Hajnovými.</p><br><p>3) Strana pokrokových socialistů, založena v roce 1896 pokrokovými dělníky <br>a anarchisty.</p><br><p>4) Česká strana státoprávní, která od začátku prosazovala všeobecné volební právo <br>a osamostatnění českých zemí.</p><br><p>Před volbami v českých zemích panovaly silně antiklerikální postoje, které vedly <br>ke sjednocení národně sociálních, radikálně pokrokových a státoprávních poslanců. Vznikla Aliance české státoprávní demokracie. Za tento státoprávní blok se do Říšské rady dostali například Karel Baxa, Václav Klofáč a Václav Hajn. O rok později <br>se Česká strana státoprávní sloučila s Radikálně pokrokovou stranou, což vedlo <br>ke vzniku České strany státoprávně pokrokové.</p> ";
+      changingPartiesDiv.innerHTML = "<p>Státoprávní blok</p><br><p>V reakci na nedostatek národních stran se na nymburském sjezdu mladočechů v roce 1894 postupně oddělily čtyři proudy:</p><br><p>1) Státoprávní pravice, která kladla důraz na historické státní právo. V jejím čele stál budoucí prvorepublikový ministr financí Alois Rašín.</p><p>2) Radikálně pokroková strana, původně Státoprávní levice, která obhajovala ideu přirozeného práva. Byla založena v roce 1897 bratry Hajnovými.</p><p>3) Strana pokrokových socialistů, založena v roce 1896 pokrokovými dělníky <br>a anarchisty.</p><p>4) Česká strana státoprávní, která od začátku prosazovala všeobecné volební právo <br>a osamostatnění českých zemí.</p><br><p>Před volbami v českých zemích panovaly silně antiklerikální postoje, které vedly <br>ke sjednocení národně sociálních, radikálně pokrokových a státoprávních poslanců. Vznikla Aliance české státoprávní demokracie. Za tento státoprávní blok se do Říšské rady dostali například Karel Baxa, Václav Klofáč a Václav Hajn. O rok později <br>se Česká strana státoprávní sloučila s Radikálně pokrokovou stranou, což vedlo <br>ke vzniku České strany státoprávně pokrokové.</p> ";
       partiesContainerDiv.style.backgroundImage = "url(../img/Cstpd.jpg";
     }
   }

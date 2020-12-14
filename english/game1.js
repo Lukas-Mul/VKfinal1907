@@ -2,7 +2,7 @@ const timeoutSign = document.querySelector(".timeoutSign");
 
 // IDLE TIMEOUT - na nabidku, jestli bude pokracovat
 (function() {
-  const idleDurationSecs = 110;
+  const idleDurationSecs = 170;
   let redirectUrl = '../index.html';  // Redirect idle users to this URL
   let idleTimeout;
   let resetIdleTimeout = function() {
@@ -31,7 +31,7 @@ const timeoutSign = document.querySelector(".timeoutSign");
 
 // IDLE TIMEOUT - na presmerovani na zacatek
 (function() {
-  const idleDurationSecs = 120;
+  const idleDurationSecs = 180;
   let redirectUrl = '../index.html';  // Redirect idle users to this URL
   let idleTimeout;
   let resetIdleTimeout = function() {
@@ -74,6 +74,10 @@ const lastResetButtonDiv = document.querySelector(".lastResetButtonDiv");
 
 const chosenAnswer = document.querySelectorAll(".choice-container");
 const answerContainer = document.querySelector(".answer-container")
+
+const choiceTextAno = document.querySelector(".choice-text-ano")
+const choiceTextNe = document.querySelector(".choice-text-ne")
+const lastQuestionText = document.querySelector(".last-question-text")
 
 
 // VARIABLES
@@ -192,7 +196,11 @@ const resetButton = document.createElement("button")
 resetButton.className = "resetButton";
 resetButton.innerText = "< RESTART";
 questionContainer.appendChild(resetButton);
-resetButton.addEventListener("click", function() {
+resetButton.addEventListener("pointerdown", function(){
+  resetButton.classList.add("resetButtonActive")
+});
+resetButton.addEventListener("pointerup", function() {
+  resetButton.classList.remove("resetButtonActive")
     return window.location.assign("../index.html");
 });
 
@@ -201,8 +209,12 @@ const resetButtonDiv = document.createElement("button")
 resetButtonDiv.className = "resetButtonDiv";
 resetButtonDiv.innerText = " < RESTART";
 restartDiv.appendChild(resetButtonDiv);
-resetButtonDiv.addEventListener("click", function() {
-    return window.location.assign("../index.html");
+resetButtonDiv.addEventListener("pointerdown", function(){
+  resetButtonDiv.classList.add("resetButtonDivActive")
+});
+resetButtonDiv.addEventListener("pointerup", function() {
+  resetButtonDiv.classList.remove("resetButtonDivActive")
+  return window.location.assign("../index.html");
 });
 
 // RESETBUTTON na posledni strance
@@ -210,8 +222,12 @@ const resetButtonLast = document.createElement("button")
 resetButtonLast.className = "lastResetButton";
 resetButtonLast.innerText = "< RESTART";
 lastResetButtonDiv.appendChild(resetButtonLast);
-lastResetButtonDiv.addEventListener("click", function() {
-    return window.location.assign("../index.html");
+resetButtonLast.addEventListener("pointerdown", function(){
+  resetButtonLast.classList.add("lastResetButtonActive")
+});
+lastResetButtonDiv.addEventListener("pointerup", function() {
+  resetButtonLast.classList.remove("lastResetButtonActive")
+  return window.location.assign("../index.html");
 });
 
 // TLACITKO "ANO", PRO POKRACOVANI PO NECINNOSTI
@@ -219,7 +235,11 @@ const continueButton = document.createElement("button")
 continueButton.className = "continueButton";
 continueButton.innerText = "YES";
 continueDiv.appendChild(continueButton);
-continueButton.addEventListener("click", function() {
+continueButton.addEventListener("pointerdown", function(){
+  continueButton.classList.add("continueButtonActive")
+});
+continueButton.addEventListener("pointerup", function() {
+  continueButton.classList.remove("continueButtonActive")
   timeoutSign.classList.add("hideTimeoutSign");
   overlay2.classList.add("hideOverlay2");
 });
@@ -241,16 +261,16 @@ questionCounter++
 // Update the progress bar
 progressBarFull.style.width = `${(questionCounter / MAX_QUESTIONS) * 100}%`;
 
-  // vytvori u divu question dalsi tridu "slide", ktera zajistuje animaci
+
+  // prida tridu slide, diky ktere text otazek slidne doleva
+function slideAway(){
   question.classList.add("slide");
-  // odstrani tridu slide, kdyz se klikne na odpoved
-  function slideAway(){
-    answerContainer.addEventListener("mousedown", function(){
+    answerContainer.addEventListener("pointerdown", (e) => {
       question.classList.remove("slide");
-    })
+    });
   }
-  // spusteni funkce slideAway
   slideAway();
+
 
 
 
@@ -265,9 +285,39 @@ acceptingAnswers = true; //tohle umozni odpovidat na otazky az tehdy, kdyz bylo 
 };
 
 
+// ZISKAT A VYMAZAT TRIDU ACTIVE - PRO ZATLACENI TLACITKA ODPOVEDI
+function active(){
+  // aktivuje tridu activeAno a activeNe na normalnich otazkach
+  function activeAno (){
+    choiceTextAno.addEventListener("pointerdown", (e) => {
+    choiceTextAno.classList.add("activeAno")
+    })};
+    activeAno();
+
+  function deactiveAno (){
+    choiceTextAno.addEventListener("pointerup", (e) => {
+    choiceTextAno.classList.remove("activeAno")
+    })};
+    deactiveAno();
+
+  function activeNe (){
+    choiceTextNe.addEventListener("pointerdown", (e) => {
+    choiceTextNe.classList.add("activeNe")
+    })};
+    activeNe();
+
+  function deactiveNe (){
+    choiceTextNe.addEventListener("pointerup", (e) => {
+    choiceTextNe.classList.remove("activeNe")
+    })};
+    deactiveNe();
+  };
+  active();
+
+
 // DOSTAT NOVOU OTAZKU A POCITANI BODU
 choices.forEach((choice) => {
-choice.addEventListener("click", (e) => {
+  choice.addEventListener("pointerup", (e) => {
   //kdyz kliknou na tu odpoved, tak tohle mi da reference na to, na co vlastne klikli
   if (!acceptingAnswers) return; //jestli jeste neakceptujeme odpoved, tak to budeme ignorovat
 
@@ -342,11 +392,18 @@ choice.addEventListener("click", (e) => {
       if (
         currentQuestion.answer == 10 &&
         (selectedAnswer == 1 || selectedAnswer == 2)
-      ) {
-        item.classList.add("last-question-text");
-      }
-    });
-  }
+        ) {
+          item.classList.add("last-question-text");
+          item.addEventListener("pointerdown", (e) => {
+            item.classList.add("activeLast")
+            })
+          item.addEventListener("pointerup", (e) => {
+            item.classList.remove("activeLast")
+            })
+        }
+      });
+    }
+  addClassLastAnswer();
 
   function addClassLastText() {
     const hiddenContainer5 = document.querySelectorAll(".choice-container");
@@ -367,11 +424,13 @@ choice.addEventListener("click", (e) => {
     button1.className = "button1";
     button1.innerText = "MORE INFO"
     questionContainer.appendChild(button1)
-    button1.addEventListener("click", function(){
-      // add class hidden na overlay element, takze kliknutim se tam ten overlay element zobrazi a udela vsechno ostatni tmavym
+    button1.addEventListener("pointerdown", function(){
+      button1.classList.add("moreInfo")
+    });
+    button1.addEventListener("pointerup", function(){
+      button1.classList.remove("moreInfo")
       overlay.classList.remove("hidden11");
       explanation1Flex.classList.add("translate");
-      
     })
   }
 
@@ -382,11 +441,13 @@ choice.addEventListener("click", (e) => {
     button2.className = "button2";
     button2.innerText = "BACK"
     explanation1Flex.appendChild(button2)
-    button2.addEventListener("click", function(){
-      overlay.classList.add("hidden11");
+    button2.addEventListener("pointerdown", function(){
+      button2.classList.add("backFromExplanation")
+    });
+    button2.addEventListener("pointerup", function(){
+      button2.classList.remove("backFromExplanation")
       explanation1Flex.classList.remove("translate");
-
-
+      overlay.classList.add("hidden11");
     })
   }
 
@@ -402,11 +463,13 @@ function createButton3 (){
   button3.className = "button3";
   button3.innerText = "MORE INFO"
   questionContainer.appendChild(button3)
-  button3.addEventListener("click", function(){
+  button3.addEventListener("pointerdown", function(){
+    button3.classList.add("moreInfo")
+  });
+  button3.addEventListener("pointerup", function(){
+    button3.classList.remove("moreInfo")
     overlay.classList.remove("hidden11");
     explanation2Flex.classList.add("translate");
-
-  
   })
 }
 
@@ -417,7 +480,11 @@ function createButton4 (){
   button4.className = "button4";
   button4.innerText = "BACK"
   explanation2Flex.appendChild(button4)
-  button4.addEventListener("click", function(){
+  button4.addEventListener("pointerdown", function(){
+    button4.classList.add("backFromExplanation")
+  });
+  button4.addEventListener("pointerup", function(){
+    button4.classList.remove("backFromExplanation")
     explanation2Flex.classList.remove("translate");
     overlay.classList.add("hidden11");
   })
@@ -641,7 +708,7 @@ function firstPartyToSee(){
     partiesContainerDiv.style.backgroundImage = "url(../img/Klerikalove.jpg";
   } 
   if(allDivs[0].innerHTML.indexOf("YOUNG CZECHS") !== -1) {
-    changingPartiesDiv.innerHTML = "<p>Young Czechs (for our calculator, we connected them with Old Czechs)</p><br> <p>The National Liberal Party, in short, Young Czechs, was a political party operating <br>in the Czech part of Austria-Hungary. It was established at the end of 1874 after long disputes in the National Party. The programme of the Young Czechs was nationalist and liberal. At the turn of the 19th and 20th centuries, the party held a dominant position in the Czech political spectrum. Karel Kramář, Alois Rašín and Miroslav Tyrš were among the party’s important members.</p><br><p>Old Czechs</p>The National Party, or Old Czechs, was the first political party in the Czech lands. <br>It was founded in 1848 by a civil initiative and brought together various political and ideological groups. Initially, it included the Young Czechs, who, however, separated after long disputes in 1874. <br>The influence of the National Party on political events – despite several years of being represented in the Imperial Council – was declining ever since.";
+    changingPartiesDiv.innerHTML = "<p>Young Czechs (for our calculator, we connected them with Old Czechs)</p><br> <p>The National Liberal Party, in short, Young Czechs, was a political party operating <br>in the Czech part of Austria-Hungary. It was established at the end of 1874 after long disputes in the National Party. The programme of the Young Czechs was nationalist and liberal. At the turn of the 19th and 20th centuries, the party held a dominant position in the Czech political spectrum. Karel Kramář, Alois Rašín and Miroslav Tyrš were among the party’s important members.</p><br><p>Old Czechs</p><br>The National Party, or Old Czechs, was the first political party in the Czech lands. <br>It was founded in 1848 by a civil initiative and brought together various political and ideological groups. Initially, it included the Young Czechs, who, however, separated after long disputes in 1874. <br>The influence of the National Party on political events – despite several years of being represented in the Imperial Council – was declining ever since.";
     partiesContainerDiv.style.backgroundImage = "url(../img/MladStar.jpg";
 
   }
@@ -656,7 +723,7 @@ function firstPartyToSee(){
 
   }
   if(allDivs[0].innerHTML.indexOf("CONSTITUTIONALIST BLOC") !== -1) {
-    changingPartiesDiv.innerHTML = "<p>Constitutionalist Bloc</p><br><p>In response to the lack of national parties, four schools of thought gradually appeared at the Nymburk congress of the Young Bohemians in 1894:</p><br><p>1) The Constitutionalist Right, which emphasized historical state law. It was headed by Alois Rašín, the future Minister of Finance of the First Republic. </p><br><p>2) The Radical Progressive Party, originally the Constitutionalist Left, which advocated for the idea of natural law. It was founded in 1897 by the Hajn brothers.</p><br><p>3) The Party of Progressive Socialists, founded in 1896 by progressive workers <br>and anarchists.</p><br><p>4)The Czech Constitutionalist Party, which advocated for universal suffrage <br>and the independence of Czech lands from the beginning. </p><br><p>Before the elections, there were strong anti-clerical feelings in the Czech lands; this led to the unification of national social, radically progressive, and constitutionalist representatives. The Alliance of Czech Constitutionalist Democracy was established. Karel Baxa, Václav Klofáč and Václav Hajn were among those who joined the Imperial Council as members of this Constitutionalist Bloc. A year later, the Czech Constitutionalist Party merged with the Radical Progressive Party, which led <br>to the establishment of the Czech Constitutionalist Party.</p> ";
+    changingPartiesDiv.innerHTML = "<p>Constitutionalist Bloc</p><br><p>In response to the lack of national parties, four schools of thought gradually appeared at the Nymburk congress of the Young Bohemians in 1894:</p><br><p>1) The Constitutionalist Right, which emphasized historical state law. It was headed by Alois Rašín, the future Minister of Finance of the First Republic. </p><p>2) The Radical Progressive Party, originally the Constitutionalist Left, which advocated for the idea of natural law. It was founded in 1897 by the Hajn brothers.</p><p>3) The Party of Progressive Socialists, founded in 1896 by progressive workers <br>and anarchists.</p><p>4)The Czech Constitutionalist Party, which advocated for universal suffrage <br>and the independence of Czech lands from the beginning. </p><br><p>Before the elections, there were strong anti-clerical feelings in the Czech lands; this led to the unification of national social, radically progressive, and constitutionalist representatives. The Alliance of Czech Constitutionalist Democracy was established. Karel Baxa, Václav Klofáč and Václav Hajn were among those who joined the Imperial Council as members of this Constitutionalist Bloc. A year later, the Czech Constitutionalist Party merged with the Radical Progressive Party, which led <br>to the establishment of the Czech Constitutionalist Party.</p> ";
     partiesContainerDiv.style.backgroundImage = "url(../img/Cstpd.jpg";
 
   }
@@ -665,15 +732,15 @@ firstPartyToSee();
 
 //Switch color of active link
 party.forEach(function (item) {
-  item.addEventListener("mousedown", function (e) {
+  item.addEventListener("pointerup", function (e) {
     partiesContainerDiv.querySelector(".current").classList.remove("current");
     item.classList.add("current");
   });
 });
 
 function clickOnDiv(){
-allDivs.forEach((something) => {
-something.addEventListener("mousedown", (e) => {
+  allDivs.forEach((something) => {
+  something.addEventListener("pointerup", (e) => {
   
   const selectedDiv = e.target; 
   // const selectedNumberDiv = selectedDiv.dataset["number"]; 
@@ -685,7 +752,7 @@ something.addEventListener("mousedown", (e) => {
       // partiesContainerDiv.classList.add("backgroundImage");
     }
     if(selectedDiv.innerHTML.indexOf("YOUNG CZECHS") !== -1) {
-      changingPartiesDiv.innerHTML = "<p>Young Czechs (for our calculator, we connected them with Old Czechs)</p><br> <p>The National Liberal Party, in short, Young Czechs, was a political party operating <br>in the Czech part of Austria-Hungary. It was established at the end of 1874 after long disputes in the National Party. The programme of the Young Czechs was nationalist and liberal. At the turn of the 19th and 20th centuries, the party held a dominant position in the Czech political spectrum. Karel Kramář, Alois Rašín and Miroslav Tyrš were among the party’s important members.</p><br><p>Old Czechs</p>The National Party, or Old Czechs, was the first political party in the Czech lands. <br>It was founded in 1848 by a civil initiative and brought together various political and ideological groups. Initially, it included the Young Czechs, who, however, separated after long disputes in 1874. <br>The influence of the National Party on political events – despite several years of being represented in the Imperial Council – was declining ever since.";
+      changingPartiesDiv.innerHTML = "<p>Young Czechs (for our calculator, we connected them with Old Czechs)</p><br> <p>The National Liberal Party, in short, Young Czechs, was a political party operating <br>in the Czech part of Austria-Hungary. It was established at the end of 1874 after long disputes in the National Party. The programme of the Young Czechs was nationalist and liberal. At the turn of the 19th and 20th centuries, the party held a dominant position in the Czech political spectrum. Karel Kramář, Alois Rašín and Miroslav Tyrš were among the party’s important members.</p><br><p>Old Czechs</p><br>The National Party, or Old Czechs, was the first political party in the Czech lands. <br>It was founded in 1848 by a civil initiative and brought together various political and ideological groups. Initially, it included the Young Czechs, who, however, separated after long disputes in 1874. <br>The influence of the National Party on political events – despite several years of being represented in the Imperial Council – was declining ever since.";
       partiesContainerDiv.style.backgroundImage = "url(../img/MladStar.jpg";
     }
     if(selectedDiv.innerHTML.indexOf("SOCIAL DEMOCRATS") !== -1) {
@@ -697,7 +764,7 @@ something.addEventListener("mousedown", (e) => {
       partiesContainerDiv.style.backgroundImage = "url(../img/Agrarnici.jpg";
     }
     if(selectedDiv.innerHTML.indexOf("CONSTITUTIONALIST BLOC") !== -1) {
-      changingPartiesDiv.innerHTML = "<p>Constitutionalist Bloc</p><br><p>In response to the lack of national parties, four schools of thought gradually appeared at the Nymburk congress of the Young Bohemians in 1894:</p><br><p>1) The Constitutionalist Right, which emphasized historical state law. It was headed by Alois Rašín, the future Minister of Finance of the First Republic. </p><br><p>2) The Radical Progressive Party, originally the Constitutionalist Left, which advocated for the idea of natural law. It was founded in 1897 by the Hajn brothers.</p><br><p>3) The Party of Progressive Socialists, founded in 1896 by progressive workers <br>and anarchists.</p><br><p>4)The Czech Constitutionalist Party, which advocated for universal suffrage <br>and the independence of Czech lands from the beginning. </p><br><p>Before the elections, there were strong anti-clerical feelings in the Czech lands; this led to the unification of national social, radically progressive, and constitutionalist representatives. The Alliance of Czech Constitutionalist Democracy was established. Karel Baxa, Václav Klofáč and Václav Hajn were among those who joined the Imperial Council as members of this Constitutionalist Bloc. A year later, the Czech Constitutionalist Party merged with the Radical Progressive Party, which led <br>to the establishment of the Czech Constitutionalist Party.</p> ";
+      changingPartiesDiv.innerHTML = "<p>Constitutionalist Bloc</p><br><p>In response to the lack of national parties, four schools of thought gradually appeared at the Nymburk congress of the Young Bohemians in 1894:</p><br><p>1) The Constitutionalist Right, which emphasized historical state law. It was headed by Alois Rašín, the future Minister of Finance of the First Republic. </p><p>2) The Radical Progressive Party, originally the Constitutionalist Left, which advocated for the idea of natural law. It was founded in 1897 by the Hajn brothers.</p><p>3) The Party of Progressive Socialists, founded in 1896 by progressive workers <br>and anarchists.</p><p>4)The Czech Constitutionalist Party, which advocated for universal suffrage <br>and the independence of Czech lands from the beginning. </p><br><p>Before the elections, there were strong anti-clerical feelings in the Czech lands; this led to the unification of national social, radically progressive, and constitutionalist representatives. The Alliance of Czech Constitutionalist Democracy was established. Karel Baxa, Václav Klofáč and Václav Hajn were among those who joined the Imperial Council as members of this Constitutionalist Bloc. A year later, the Czech Constitutionalist Party merged with the Radical Progressive Party, which led <br>to the establishment of the Czech Constitutionalist Party.</p> ";
       partiesContainerDiv.style.backgroundImage = "url(../img/Cstpd.jpg";
     }
   }

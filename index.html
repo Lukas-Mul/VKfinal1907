@@ -6,20 +6,20 @@
     <link rel="stylesheet" href="./czech/2_intro_style.css" />
     <title>Volební kalkulačka</title>
   </head>
-  <body>
+  <body oncontextmenu="return false">
     <div class="container-intro">
       <div class="container-intro-href czechVersion">
             <div class="text-container">
-              <div class="title">VOLEBNÍ KALKULAČKA 1907</div>
-              <div class="start">Spustit</div>
+              <div class="title">VOLEBNÍ KALKULAČKA &nbsp;1907</div>
+              <div class="start">Koho byste volili v roce 1907?</div>
               <div class="lang-icon">CZ</div>
             </div>
       </div>
 
       <div class="container-intro-href englishVersion">
             <div class="text-container">
-            <div class="title">VOTING CALCULATOR 1907</div>
-            <div class="start">Start</div>
+            <div class="title">VOTING CALCULATOR &nbsp;1907</div>
+            <div class="start">Who would you vote for in 1907?</div>
             <div class="lang-icon">EN</div>
             </div>
       </div>
@@ -27,18 +27,29 @@
 
     
     <script type="text/javascript">
-      const czechButton = document.querySelector(".czechVersion");
-      czechButton.addEventListener("click", function() {
-        return window.location.assign("./czech/1_video.html");
-      });
-
-      const englishButton = document.querySelector(".englishVersion")
-      englishButton.addEventListener("click", function() {
-        return window.location.assign("./english/1_video.html");
-      });
+      // Zatlaci tlacitko s ceskou verzi a presmeruje na video
+        const czechButton = document.querySelector(".czechVersion");
+          czechButton.addEventListener("pointerdown", function() {
+            czechButton.classList.add("czechVersionActive")
+          });
+          czechButton.addEventListener("pointerup", function() {
+            czechButton.classList.remove("czechVersionActive")
+            return window.location.assign("./czech/1_video.html");
+          });
+  
       
-      
-    </script>
+      // Zatlaci tlacitko s anglickou verzi a presmeruje na video
+        const englishButton = document.querySelector(".englishVersion")
+        englishButton.addEventListener("pointerdown", function() {
+            englishButton.classList.add("englishVersionActive")
+          });
+          englishButton.addEventListener("pointerup", function() {
+            englishButton.classList.remove("englishVersionActive")
+            return window.location.assign("./english/1_video.html");
+          });
+        
+        
+      </script>
   </body>    
 </html>
 
