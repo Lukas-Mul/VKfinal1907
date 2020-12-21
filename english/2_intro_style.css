@@ -414,6 +414,10 @@ a {
   line-height: 95%;
 }
 
+.push {
+  box-shadow: inset 2px 2px 6px black;
+}
+
 .current {
   height: 22%;
   width: 47%;
@@ -959,8 +963,4 @@ a {
 
 .resetButtonActive {
   font-size: 23pt;
-}
-
-.hideSkipButton {
-  display: none;
 }

@@ -731,9 +731,16 @@ firstPartyToSee();
 
 //Switch color of active link
 party.forEach(function (item) {
+  item.addEventListener("pointerdown", function (e) {
+    item.classList.add("push");
+  });
+});
+
+party.forEach(function (item) {
   item.addEventListener("pointerup", function (e) {
     partiesContainerDiv.querySelector(".current").classList.remove("current");
     item.classList.add("current");
+    item.classList.remove("push");
   });
 });
 
